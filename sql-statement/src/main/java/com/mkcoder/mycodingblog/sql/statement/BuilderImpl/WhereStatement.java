@@ -32,7 +32,8 @@ public class WhereStatement implements SqlBuilder<String> {
         return this;
     }
 
-    public WhereLikeStatement like() {
+    public WhereLikeStatement like() throws SqlConditionsFailedException {
+        SqlConditions.checkstatement(sb.toString(), SqlConditions.Condition.ENDS_WITH_AND_OR);
         return new WhereLikeStatement(this);
     }
 
@@ -57,6 +58,18 @@ public class WhereStatement implements SqlBuilder<String> {
             this.where = whereStatement;
         }
 
+        public WhereConjoiningStatement or() throws SqlConditionsFailedException {
+            SqlConditions.checkstatement(sb.toString(), SqlConditions.Condition.ENDS_WITH_AND_OR);
+            sb.append(SqlConstant.SPACE + "" + SqlConstant.OR + SqlConstant.SPACE );
+            return this;
+        }
+
+        public WhereConjoiningStatement and() throws SqlConditionsFailedException {
+            SqlConditions.checkstatement(sb.toString(), SqlConditions.Condition.ENDS_WITH_AND_OR);
+            sb.append(SqlConstant.SPACE + "" + SqlConstant.AND + SqlConstant.SPACE );
+            return this;
+        }
+
         public WhereConjoiningStatement and(String clause) throws SqlConditionsFailedException {
             SqlConditions.checkstatement(clause,
                     SqlConditions.Condition.NON_EMPTY_STRING);
@@ -69,6 +82,10 @@ public class WhereStatement implements SqlBuilder<String> {
                     SqlConditions.Condition.NON_EMPTY_STRING);
             where.sb.append(clause).append(SqlConstant.SPACE).append(SqlConstant.OR).append(SqlConstant.SPACE);
             return this;
+        }
+
+        public WhereLikeStatement like() {
+            return new WhereLikeStatement(where);
         }
 
         public WhereStatement closeStream() {
@@ -98,14 +115,10 @@ public class WhereStatement implements SqlBuilder<String> {
                 this.whereConjoin = whereConjoin;
             }
 
-            public WhereStatement paramater(String paramater) throws SqlConditionsFailedException {
+            public WhereConjoiningStatement paramater(String paramater) throws SqlConditionsFailedException {
                 SqlConditions.checkstatement(paramater,
                         SqlConditions.Condition.NON_EMPTY_STRING);
                 this.whereConjoin.sb.append(paramater);
-                return this.whereConjoin;
-            }
-
-            public WhereConjoiningStatement conjoin() {
                 return new WhereConjoiningStatement(this.whereConjoin);
             }
         }

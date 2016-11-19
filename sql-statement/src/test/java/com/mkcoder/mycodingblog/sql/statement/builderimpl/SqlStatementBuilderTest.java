@@ -21,6 +21,11 @@ public class SqlStatementBuilderTest {
     @Test
     public void testSqlStatementGivenAnExmptySelectFromThrowError() throws Exception {
         System.out.println(new SqlStatementBuilder(
+                new SelectStatement(new FromStatement("dummy-table"))
+                .column("*")
+        ).build());
+
+        System.out.println(new SqlStatementBuilder(
                 new WhereStatement(
                         new SelectStatement(
                                 new FromStatement("test", "test2 t", "fake")
@@ -33,8 +38,10 @@ public class SqlStatementBuilderTest {
                 .conjoinStream()
                 .and("1 > 2")
                 .or("2 < 1")
-                .closeStream()
                 .like().columnName("col").paramater("1")
+                .and()
+                .like().columnName("col2").paramater("2")
+                .closeStream()
         ).build());
     }
 }

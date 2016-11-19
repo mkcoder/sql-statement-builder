@@ -1,5 +1,7 @@
 package com.mkcoder.mycodingblog.sql.statement.exception;
 
+import com.mkcoder.mycodingblog.sql.statement.constant.SqlConstant;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
@@ -11,7 +13,9 @@ import java.util.stream.Collectors;
 public class SqlConditions {
 
     public enum Condition {
-        NON_EMPTY_STRING("String is empty!", (s) -> s.equals(""));
+        NON_EMPTY_STRING("String is empty!", (s) -> s.equals("")),
+        ENDS_WITH_AND_OR("You called a top level statement!",
+                s -> s.endsWith(SqlConstant.AND.getKeyword()) || s.endsWith(SqlConstant.OR.getKeyword()));
 
 
         private final String message;
