@@ -40,6 +40,8 @@ public class SqlStatementBuilderTest {
                 .or("2 < 1")
                 .like().columnName("col").paramater("1")
                 .and()
+                .and()
+                .and()
                 .like().columnName("col2").paramater("2")
                 .closeStream()
         ).build());

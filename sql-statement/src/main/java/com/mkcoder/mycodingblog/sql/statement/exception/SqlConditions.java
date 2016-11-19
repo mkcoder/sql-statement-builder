@@ -14,8 +14,10 @@ public class SqlConditions {
 
     public enum Condition {
         NON_EMPTY_STRING("String is empty!", (s) -> s.equals("")),
-        ENDS_WITH_AND_OR("You called a top level statement!",
-                s -> s.endsWith(SqlConstant.AND.getKeyword()) || s.endsWith(SqlConstant.OR.getKeyword()));
+        NOT_ENDS_WITH_AND_OR("You called a top level statement!",
+                s -> !(s.trim().endsWith(SqlConstant.AND.getKeyword()) || s.trim().endsWith(SqlConstant.OR.getKeyword()))),
+        ENDS_WITH_AND_OR("Your statement already ends with an 'AND' or 'OR'",
+                s -> s.trim().endsWith(SqlConstant.AND.getKeyword()) || s.trim().endsWith(SqlConstant.OR.getKeyword()));
 
 
         private final String message;
@@ -50,6 +52,4 @@ public class SqlConditions {
                 .filter(c -> c.predicate.test(clause))
                 .collect(Collectors.toList());
     }
-
-
 }

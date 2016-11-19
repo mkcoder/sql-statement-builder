@@ -32,12 +32,6 @@ public class WhereStatement implements SqlBuilder<String> {
         return this;
     }
 
-    public WhereLikeStatement like() throws SqlConditionsFailedException {
-        SqlConditions.checkstatement(sb.toString(), SqlConditions.Condition.ENDS_WITH_AND_OR);
-        return new WhereLikeStatement(this);
-    }
-
-
     public WhereConjoiningStatement conjoinStream() {
         return new WhereConjoiningStatement(this);
     }
@@ -60,12 +54,14 @@ public class WhereStatement implements SqlBuilder<String> {
 
         public WhereConjoiningStatement or() throws SqlConditionsFailedException {
             SqlConditions.checkstatement(sb.toString(), SqlConditions.Condition.ENDS_WITH_AND_OR);
+
             sb.append(SqlConstant.SPACE + "" + SqlConstant.OR + SqlConstant.SPACE );
             return this;
         }
 
         public WhereConjoiningStatement and() throws SqlConditionsFailedException {
             SqlConditions.checkstatement(sb.toString(), SqlConditions.Condition.ENDS_WITH_AND_OR);
+
             sb.append(SqlConstant.SPACE + "" + SqlConstant.AND + SqlConstant.SPACE );
             return this;
         }
@@ -73,18 +69,24 @@ public class WhereStatement implements SqlBuilder<String> {
         public WhereConjoiningStatement and(String clause) throws SqlConditionsFailedException {
             SqlConditions.checkstatement(clause,
                     SqlConditions.Condition.NON_EMPTY_STRING);
-            where.sb.append(clause).append(SqlConstant.SPACE).append(SqlConstant.AND).append(SqlConstant.SPACE);
+            SqlConditions.checkstatement(sb.toString(), SqlConditions.Condition.ENDS_WITH_AND_OR);
+
+            sb.append(clause).append(SqlConstant.SPACE).append(SqlConstant.AND).append(SqlConstant.SPACE);
             return this;
         }
 
         public WhereConjoiningStatement or(String clause) throws SqlConditionsFailedException {
             SqlConditions.checkstatement(clause,
                     SqlConditions.Condition.NON_EMPTY_STRING);
-            where.sb.append(clause).append(SqlConstant.SPACE).append(SqlConstant.OR).append(SqlConstant.SPACE);
+            SqlConditions.checkstatement(sb.toString(), SqlConditions.Condition.ENDS_WITH_AND_OR);
+
+            sb.append(clause).append(SqlConstant.SPACE).append(SqlConstant.OR).append(SqlConstant.SPACE);
             return this;
         }
 
-        public WhereLikeStatement like() {
+        public WhereLikeStatement like() throws SqlConditionsFailedException {
+            SqlConditions.checkstatement(sb.toString().trim(), SqlConditions.Condition.NOT_ENDS_WITH_AND_OR);
+
             return new WhereLikeStatement(where);
         }
 
@@ -96,7 +98,7 @@ public class WhereStatement implements SqlBuilder<String> {
     public final class WhereLikeStatement {
         private final WhereStatement whereConjoin;
 
-        private WhereLikeStatement(WhereStatement whereConjoiningStatement) {
+        private WhereLikeStatement(WhereStatement whereConjoiningStatement) throws SqlConditionsFailedException {
             this.whereConjoin = whereConjoiningStatement;
         }
 
@@ -104,7 +106,7 @@ public class WhereStatement implements SqlBuilder<String> {
         public RightHandSide columnName(String s) throws SqlConditionsFailedException {
             SqlConditions.checkstatement(s,
                     SqlConditions.Condition.NON_EMPTY_STRING);
-            this.whereConjoin.sb.append(s).append(SqlConstant.SPACE).append(SqlConstant.LIKE).append(SqlConstant.SPACE);
+            sb.append(s).append(SqlConstant.SPACE).append(SqlConstant.LIKE).append(SqlConstant.SPACE);
             return new RightHandSide(whereConjoin);
         }
 
@@ -118,7 +120,7 @@ public class WhereStatement implements SqlBuilder<String> {
             public WhereConjoiningStatement paramater(String paramater) throws SqlConditionsFailedException {
                 SqlConditions.checkstatement(paramater,
                         SqlConditions.Condition.NON_EMPTY_STRING);
-                this.whereConjoin.sb.append(paramater);
+                sb.append(paramater).append(SqlConstant.SPACE);
                 return new WhereConjoiningStatement(this.whereConjoin);
             }
         }
