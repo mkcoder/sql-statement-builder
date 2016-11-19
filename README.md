@@ -7,9 +7,10 @@ Don't like how things are done, or need to additonal checks, i've made it easy t
 ```
 String query = new SqlStatementBuilder(
                 new SelectStatement(
-                    new FromStatement("<table-name> <alias>")
+                    new FromStatement("dummy-table")
                 ).column("*")
-        ).build()
+        ).build();
+// Results in: SELECT * FROM dummy-table;       
 ```
 ## advance use of conjoinStream
 ```
@@ -30,7 +31,8 @@ String query = new SqlStatementBuilder(
                 .and()
                 .like().columnName("col2").paramater("2")
                 .closeStream()
-        ).build()
+        ).build();
+// Results in: SELECT col1,  col2,  col3,  col4 FROM test, test2 t, fake WHERE 1 > 2 AND 2 < 1 OR col LIKE 1 AND col2 LIKE 2;        
 ```
 # use it in a spring based project
 # Spring MVC
