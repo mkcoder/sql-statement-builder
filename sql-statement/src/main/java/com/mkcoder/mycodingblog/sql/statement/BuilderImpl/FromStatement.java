@@ -28,6 +28,6 @@ public class FromStatement implements SqlBuilder<String> {
 
     public String build() {
         // TODO: remove this constant
-        return SqlConstant.SPACE + FROM.getKeyword() + SqlConstant.SPACE + tableNames.stream().collect(Collectors.joining(", ")) + SqlConstant.SPACE;
+        return SqlConstant.SPACE + FROM.getKeyword() + SqlConstant.SPACE + tableNames.stream().collect(Collectors.joining(", "));
     }
 }

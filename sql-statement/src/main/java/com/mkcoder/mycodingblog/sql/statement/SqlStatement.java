@@ -5,7 +5,7 @@ import com.mkcoder.mycodingblog.sql.statement.builderimpl.SelectStatement;
 import com.mkcoder.mycodingblog.sql.statement.builderimpl.WhereStatement;
 
 /**
- * the main class that will hold the SqlStatement Builder and build it do all the heavy lifting here
+ * the main class that will hold the SqlStatement Builder whereClause build it do all the heavy lifting here
  */
 public final class SqlStatement {
 

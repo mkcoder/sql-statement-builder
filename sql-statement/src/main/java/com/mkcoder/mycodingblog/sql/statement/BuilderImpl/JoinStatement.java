@@ -6,7 +6,7 @@ import javax.inject.Named;
 
 /**
  * create a join statement
- * <h1>If this join statement is complex consider using a stored proc and executing that stored proc.</h1>
+ * <h1>If this join statement is complex consider using a stored proc whereClause executing that stored proc.</h1>
  */
 @Named
 public class JoinStatement implements SqlBuilder<String> {

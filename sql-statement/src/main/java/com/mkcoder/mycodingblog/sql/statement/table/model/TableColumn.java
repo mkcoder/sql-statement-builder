@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Represents a column or expression and an alias if avialable
+ * Represents a column or expression whereClause an alias if avialable
  */
 @Named
 public class TableColumn implements Builder<String> {
