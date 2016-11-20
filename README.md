@@ -33,7 +33,7 @@ String query =  new SqlStatementBuilder(
                     .like().columnName("abc").like("123%")
                     .closeStream()
                 ).build();
-// Results in: SELECT col1,  col2,  col3,  col4 FROM test, test2 t, fake WHERE 1 > 2 AND 2 < 1 OR col LIKE 1 AND col2 LIKE 2;        
+// Results in: SELECT col1,  col2,  col3,  col4 FROM test, test2 t, fakeWHERE 1 > 2 AND  1 > 2  AND  123  OR abc LIKE 123%;
 ```
 # use it in a spring based project
 # Spring MVC
