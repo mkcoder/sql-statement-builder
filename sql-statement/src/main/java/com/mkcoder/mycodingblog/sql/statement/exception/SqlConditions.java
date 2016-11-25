@@ -48,7 +48,7 @@ public class SqlConditions {
 
     private static List<Condition> checker(String clause, Condition[] conditions) {
         return Arrays
-                .asList(conditions).stream()
+                .stream(conditions)
                 .filter(c -> c.predicate.test(clause))
                 .collect(Collectors.toList());
     }
