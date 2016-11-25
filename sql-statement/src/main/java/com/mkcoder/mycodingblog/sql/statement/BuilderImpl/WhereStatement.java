@@ -34,10 +34,10 @@ public class WhereStatement implements SqlBuilder<String> {
     }
 
     public String build() {
-        return (select == null) ?
+        return ((select == null) ?
                 join.build() :
-                select.build() +
-                SqlConstant.WHERE + SqlConstant.SPACE +
+                select.build()) +
+                SqlConstant.SPACE + SqlConstant.WHERE + SqlConstant.SPACE +
                 sb.toString();
     }
 
